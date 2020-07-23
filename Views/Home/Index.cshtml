@@ -1,0 +1,27 @@
+@using System.Diagnostics
+
+@{
+    var version = FileVersionInfo.GetVersionInfo(typeof(IdentityServer4.Hosting.IdentityServerMiddleware).Assembly.Location).ProductVersion.Split('+').First();
+}
+
+<div class="welcome-page">
+    <h1>
+        <img src="~/icon.jpg">
+        Welcome to IdentityServer4
+        <small class="text-muted">(version @version)</small>
+    </h1>
+
+    <ul>
+        <li>
+            IdentityServer发布
+            <a href="~/.well-known/openid-configuration">发现文档</a>
+            您可以在其中找到元数据以及指向所有端点，关键材料等的链接。
+        </li>
+        <li>
+            单击 <a href="~/diagnostics">此处</a> 查看您当前会话的声明。
+        </li>
+        <li>
+            单击 <a href="~/grants">此处</a> 管理您存储的赠款。
+        </li>
+    </ul>
+</div>
