@@ -11,11 +11,12 @@ namespace IdentityServerAspNetIdentity
     public static class Config
     {
         public static IEnumerable<IdentityResource> IdentityResources =>
-                   new IdentityResource[]
-                   {
+            new IdentityResource[]
+            {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                   };
+                new IdentityResources.Profile(),
+            };
 
         public static IEnumerable<ApiScope> ApiScopes =>
             new ApiScope[]
@@ -63,12 +64,20 @@ namespace IdentityServerAspNetIdentity
                     //客户端授权类型，Implicit:隐藏模式
                     AllowedGrantTypes=GrantTypes.Implicit,
                     //允许登录后重定向的地址列表，可以有多个
-                   RedirectUris = {"http://localhost:30002/auth.html"},
+                    RedirectUris =
+                    {
+                        "http://localhost:30002/Login/GetLoginCallback",
+                        "http://localhost:30002/Login/PostLoginCallback",
+                        "http://localhost:30002/signin-oidc"
+                    },
+                    //注销登录的回调地址列表，可以有多个
+                    PostLogoutRedirectUris = { "https://localhost:30002/signout-callback-oidc" },
                     //允许访问的资源
                     AllowedScopes={
-                       "secretapi",
+                       "scope1",
                        IdentityServerConstants.StandardScopes.OpenId,
-                       "PhoneModel"
+                       IdentityServerConstants.StandardScopes.Profile,
+                       "scope2"
                    },
                     //允许将token通过浏览器传递
                     AllowAccessTokensViaBrowser=true,
@@ -77,7 +86,7 @@ namespace IdentityServerAspNetIdentity
                 },
                 new Client()
                {
-                    AlwaysIncludeUserClaimsInIdToken=true,
+                   AlwaysIncludeUserClaimsInIdToken = true,
                    //客户端Id
                     ClientId="apiClientHybrid",
                     ClientName="ApiClient for HyBrid",
@@ -86,16 +95,24 @@ namespace IdentityServerAspNetIdentity
                     //客户端授权类型，Hybrid:混合模式
                     AllowedGrantTypes=GrantTypes.Hybrid,
                     //允许登录后重定向的地址列表，可以有多个
-                   RedirectUris = {"https://localhost:30002/auth.html"},
+                   RedirectUris =
+                   {
+                       "http://localhost:30002/Login/GetLoginCallback",
+                       "http://localhost:30002/Login/PostLoginCallback",
+                       "http://localhost:30002/signin-oidc"
+                   },
+                   PostLogoutRedirectUris = { "https://localhost:30002/signout-callback-oidc" },
                     //允许访问的资源
                     //允许访问的资源
                     AllowedScopes={
-                       "secretapi",
+                       "scope1",
                        IdentityServerConstants.StandardScopes.OpenId,
-                       "PhoneModel"
+                       IdentityServerConstants.StandardScopes.Profile,
+                       "scope2"
                    },
-                     AllowOfflineAccess = true,
-                    AllowAccessTokensViaBrowser=true
+                    AllowOfflineAccess  = true,
+                    AllowAccessTokensViaBrowser = true,
+                    RequirePkce = false
                }
 
 

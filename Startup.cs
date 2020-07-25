@@ -103,32 +103,47 @@ namespace IdentityServerAspNetIdentity
 
                 var context = serviceScope.ServiceProvider.GetRequiredService<ConfigurationDbContext>();
                 context.Database.Migrate();
-                if (!context.Clients.Any())
+                //if (!context.Clients.Any())
+                //{
+
+                //}
+
+                foreach (var client in Config.Clients)
                 {
-                    foreach (var client in Config.Clients)
+                    if (!context.Clients.Any(x => x.ClientId == client.ClientId))
                     {
                         context.Clients.Add(client.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
 
-                if (!context.IdentityResources.Any())
+                //if (!context.IdentityResources.Any())
+                //{
+
+                //}
+
+                foreach (var resource in Config.IdentityResources)
                 {
-                    foreach (var resource in Config.IdentityResources)
+                    if (!context.IdentityResources.Any(x => x.Name == resource.Name))
                     {
                         context.IdentityResources.Add(resource.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
 
-                if (!context.ApiScopes.Any())
+                //if (!context.ApiScopes.Any())
+                //{
+
+                //}
+
+                foreach (var apiScope in Config.ApiScopes)
                 {
-                    foreach (var apiScope in Config.ApiScopes)
+                    if (!context.ApiScopes.Any(x => x.Name == apiScope.Name))
                     {
                         context.ApiScopes.Add(apiScope.ToEntity());
                     }
-                    context.SaveChanges();
                 }
+                context.SaveChanges();
 
                 //ApiScopes
                 //if (!context.ApiResources.Any())
