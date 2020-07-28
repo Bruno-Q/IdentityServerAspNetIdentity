@@ -15,7 +15,7 @@ namespace IdentityServerAspNetIdentity
             {
                 new IdentityResources.OpenId(),
                 new IdentityResources.Profile(),
-                new IdentityResources.Profile(),
+                new IdentityResource("woc","woc",new List<string>(){ "woc"})
             };
 
         public static IEnumerable<ApiScope> ApiScopes =>
@@ -23,6 +23,7 @@ namespace IdentityServerAspNetIdentity
             {
                 new ApiScope("scope1"),
                 new ApiScope("scope2"),
+                new ApiScope("api1", "My API")
             };
 
         public static IEnumerable<Client> Clients =>
@@ -55,7 +56,22 @@ namespace IdentityServerAspNetIdentity
                 //    AllowOfflineAccess = true,
                 //    AllowedScopes = { "openid", "profile", "scope2" }
                 //},
+                new Client
+                {
+                    ClientId = "client",
 
+                    // no interactive user, use the clientid/secret for authentication
+                    AllowedGrantTypes = GrantTypes.ClientCredentials,
+
+                    // secret for authentication
+                    ClientSecrets =
+                    {
+                        new Secret("secret".Sha256())
+                    },
+
+                    // scopes that client has access to
+                    AllowedScopes = { "api1" }
+                },
                 new Client()
                 {
                    //客户端Id
@@ -112,8 +128,14 @@ namespace IdentityServerAspNetIdentity
                    },
                     AllowOfflineAccess  = true,
                     AllowAccessTokensViaBrowser = true,
-                    RequirePkce = false
-               }
+                    RequirePkce = false,
+
+                    #region 同意屏幕
+
+                    RequireConsent = true,
+
+                    #endregion
+                }
 
 
             };
